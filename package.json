@@ -1,0 +1,9 @@
+{
+  "name": "js-study",
+  "version": "0.0.0",
+  "description": "",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "lodash": "^3.9.3"
+  }
+}

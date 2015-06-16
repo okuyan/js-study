@@ -34,14 +34,12 @@ describe('Flyweight pettern', function() {
   var wolf2 = spawnEnemy();
   
   wolf1.health = 5;
-  wolf1.setPosition(10, 10);
   wolf2.setPosition(20, 20);
+  wolf1.setPosition(10, 10);
   
-  wolf2.position = 10;
-
   var wolf3 = spawnEnemy();
   
-  console.log(wolf3.position);
+  console.log(wolf1.health);
   
   it('should be 20. Primitives overrides automatically.', function() {
     expect(wolf2.health).to.be(20);    
@@ -52,7 +50,7 @@ describe('Flyweight pettern', function() {
   });
   
   it('should be 20.', function() {
-    expect(wolf2.position.x).to.be(20);
+    expect(wolf2.position.y).to.be(20);
   });
   
   it('should remain 10.', function() {
@@ -62,5 +60,9 @@ describe('Flyweight pettern', function() {
   it('should be 0. prototype should remain unchanged.', function() {
     expect(wolf3.position.x).to.be(0);
   });
+  
+  it('should be 20 since it\'s default value', function() {
+    expect(wolf3.health).to.be(20);
+  })
   
 });
