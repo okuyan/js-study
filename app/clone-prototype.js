@@ -37,4 +37,7 @@ describe('cloning prototype', function() {
     expect(switch2.isOn()).to.be(false);
   });
   
+  switch2.meta.name = 'hoge';
+  
+  
 });
