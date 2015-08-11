@@ -1,4 +1,4 @@
-var expect = require('expect.js');
+var expect = require('chai').expect;
 
 var fibonacci = function(num) {
   var fibo = [1, 1];
@@ -27,9 +27,11 @@ describe('fibonacci', function() {
   it('should be [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]', function() {
     var arr = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
     var result = fibonacci(10);
+    
     expect(result).to.be.an('array');
     expect(result).to.have.length(10);
     expect(result[10-1]).to.be.equal(55);
+    expect(result).to.eql(arr);
   });
   
 });

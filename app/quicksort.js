@@ -1,89 +1,95 @@
-var expect = require('expect.js');
+var expect = require('chai').expect;
 
-var quicksort =  (function() {
- 
-  //Swaps two values in the heap
-  // @param {int} indexA Index of the first item to be swapped
-  // @param {int} indexB Index of the second item to be swapped
-  function swap(array, indexA, indexB) {
-    var temp = array[indexA];
-    array[indexA] = array[indexB];
-    array[indexB] = temp;
-  }
- 
-  // Partitions the (sub)array into values less than and greater
-  // than the pivot value
-  // @param {Array} array The target array
-  // @param {int} pivot The index of the pivot
-  // @param {int} left The index of the leftmost element
-  // @param {int} left The index of the rightmost element
-  function partition(array, pivot, left, right) {
- 
-    var storeIndex = left,
-        pivotValue = array[pivot];
- 
-    // put the pivot on the right
-    swap(array, pivot, right);
- 
-    // go through the rest
-    for(var v = left; v < right; v++) {
- 
-      // if the value is less than the pivot's
-      // value put it to the left of the pivot
-      // point and move the pivot point along one
-      if(array[v] < pivotValue) {
-        swap(array, v, storeIndex);
-        storeIndex++;
+var swap = function (items, firstIndex, secondIndex){
+  var temp = items[firstIndex];
+  items[firstIndex] = items[secondIndex];
+  items[secondIndex] = temp;
+};
+
+var partition = function partition(items, left, right) {
+
+  var pivot   = items[Math.floor((right + left) / 2)],
+      i       = left,
+      j       = right;
+
+  while (i <= j) {
+
+      while (items[i] < pivot) {
+          i++;
       }
-    }
- 
-    // finally put the pivot in the correct place
-    swap(array, right, storeIndex);
- 
-    return storeIndex;
+
+      while (items[j] > pivot) {
+          j--;
+      }
+
+      if (i <= j) {
+          swap(items, i, j);
+          i++;
+          j--;
+      }
   }
- 
-  /**
-   * Sorts the (sub-)array
-   *
-   * @param {Array} array The target array
-   * @param {int} left The index of the leftmost element, defaults 0
-   * @param {int} left The index of the rightmost element,
-   defaults array.length-1
-   */
-  function sort(array, left, right) {
- 
-    var pivot = null;
- 
-    if(typeof left !== 'number') {
-      left = 0;
-    }
- 
-    if(typeof right !== 'number') {
-      right = array.length - 1;
-    }
- 
-    // effectively set our base
-    // case here. When left == right
-    // we'll stop
-    if(left < right) {
- 
-      // pick a pivot between left and right
-      // and update it once we've partitioned
-      // the array to values < than or > than
-      // the pivot value
-      pivot     = left + Math.ceil((right - left) * 0.5);
-      newPivot  = partition(array, pivot, left, right);
- 
-      // recursively sort to the left and right
-      sort(array, left, newPivot - 1);
-      sort(array, newPivot + 1, right);
-    }
- 
+
+  return i;
+}
+
+var partition2 = function(items, left, right) {
+
+  var pivot   = items[Math.floor((right + left) / 2)];
+
+  while (left <= right) {
+
+      while (items[left] < pivot) {
+          left++;
+      }
+
+      while (items[right] > pivot) {
+          right--;
+      }
+
+      if (left <= right) {
+          swap(items, left, right);
+          left++;
+          right--;
+      }
   }
- 
-  return {
-    sort: sort
-  };
- 
-})();
+
+  return left;
+}
+
+var quicksort =  function(arr, left, right) {
+
+  var index;
+
+  if (arr.length > 1) {
+//    index = partition(arr, left, right);
+    index = partition2(arr, left, right);
+
+    if (left < index - 1) {
+      quicksort(arr, left, index -1);
+    }
+    
+    if (index < right) {
+      quicksort(arr, index, right);
+    }
+
+  }
+  return arr;
+};
+
+
+
+describe('quicksort', function() {
+  
+  it('should be sorted as [1, 2, 3, 4, 5, 6, 7, 8]', function() {
+    var arr = [8, 4, 3, 7, 6, 5, 2, 1];
+    //0, 1, 2, 3, 4, 5, 6, 7
+    //0 + 7 = 7/2 = 4
+    //1 + 6 = 7/2 = 4
+    //2+ 5 = 7/2 = 4 
+    
+    var result = quicksort(arr, 0, arr.length-1);
+    
+    expect(result).to.eql([1, 2, 3, 4, 5, 6, 7, 8]);
+    
+  });
+});
